@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>5-Star Review Generator | Glam Fusion Salon</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 p-6">
+
+<div class="max-w-3xl mx-auto">
+  <div class="bg-white rounded-2xl shadow-xl p-8">
+
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">
+        5-Star Review Generator
+      </h1>
+      <p class="text-gray-700 font-medium">
+        Glam Fusion Salon by Global Skin Wellness
+      </p>
+      <p class="text-sm text-gray-500 mt-1">
+        Unisex Hair Salon & Makeup Studio • 200+ unique Reviews by Adiboy Developers
+      </p>
+    </div>
+
+    <!-- Stars -->
+    <div class="flex justify-center mb-6 text-yellow-400">
+      <i data-lucide="star" class="w-8 h-8 fill-yellow-400"></i>
+      <i data-lucide="star" class="w-8 h-8 fill-yellow-400"></i>
+      <i data-lucide="star" class="w-8 h-8 fill-yellow-400"></i>
+      <i data-lucide="star" class="w-8 h-8 fill-yellow-400"></i>
+      <i data-lucide="star" class="w-8 h-8 fill-yellow-400"></i>
+    </div>
+
+    <!-- Generate Button -->
+    <button
+      onclick="generateReview()"
+      class="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 shadow-lg"
+    >
+      <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+      Generate Random Review
+    </button>
+
+    <!-- Output -->
+    <div id="output" class="hidden mt-6 space-y-4">
+      <div class="bg-gray-50 border-2 border-gray-200 rounded-xl p-6">
+        <p id="reviewText" class="text-gray-800 leading-relaxed text-lg"></p>
+      </div>
+
+      <button
+        onclick="copyReview()"
+        class="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-6 rounded-xl flex items-center justify-center gap-2"
+      >
+        <i data-lucide="copy" class="w-5 h-5"></i>
+        <span id="copyBtnText">Copy Review</span>
+      </button>
+    </div>
+
+    <!-- Placeholder -->
+    <div id="placeholder" class="text-center py-12 text-gray-400">
+      <i data-lucide="star" class="w-16 h-16 mx-auto mb-4 opacity-30"></i>
+      <p>Click the button above to generate a random 5-star review</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+lucide.createIcons();
+
+/* ===============================
+   CUSTOM SEO REVIEWS
+   =============================== */
+const myCustomReviews = [
+  "Glam Fusion Salon by Global Skin Wellness is the best salon in Patna. Amazing haircut and styling with very professional staff.",
+  "Visited Glam Fusion Salon in Patliputra for hair styling and the experience was excellent. Clean salon and expert stylists.",
+  "Bridal makeup done here was absolutely flawless. One of the best makeup studios in Patna. Highly recommended!",
+  "Amazing unisex salon in Patna. Haircut, coloring, and overall service were top-notch.",
+  "Very luxurious experience at Glam Fusion Salon. Staff is polite and the ambience is relaxing.",
+  "Got party makeup done and the results were stunning. Makeup artists are very skilled.",
+  "Best beauty parlour services in Patliputra. Facials and skincare treatments are really effective.",
+  "Hair spa and styling services were amazing. Definitely my go-to salon in Patna." , "Glam Fusion Salon by Global Skin Wellness ka experience bahut hi premium raha, staff polite tha aur haircut bilkul perfect mila, highly recommended salon in Patna.",
+"Patliputra me best unisex salon hai, hair styling aur hair spa dono hi kaafi relaxing aur professional lage, ambience bhi kaafi accha tha.",
+"Bridal makeup ke liye Glam Fusion Salon choose kiya tha, result bilkul flawless tha aur makeup long lasting raha, thank you team.",
+"Salon bilkul clean aur hygienic tha, staff ne proper guidance di aur haircut exactly meri expectation jaisa tha.",
+"Party makeup yahan se karwaya aur sab logon ne appreciate kiya, makeup artist ka kaam really impressive tha.",
+"Hair color ka result bahut natural laga, koi damage feel nahi hua, overall experience kaafi satisfying raha.",
+"Facial service bahut relaxing thi aur skin ke results immediately visible the, beauty services kaafi professional hain.",
+"Hair spa ke baad baal kaafi smooth aur shiny ho gaye, Glam Fusion Salon ab mera regular salon ban gaya hai.",
+"Staff ka behaviour friendly tha aur service time par complete hui, Patliputra area ka best salon lagta hai.",
+"Makeup studio ka setup kaafi premium hai aur artists bahut experienced lagte hain, definitely recommended.",
+"Unisex salon hone ki wajah se couple ke liye bhi kaafi convenient hai, services bhi top quality ki hain.",
+"Waxing aur skincare services ka experience kaafi smooth raha, hygiene ka proper dhyaan rakha gaya.",
+"Haircut ke saath styling bhi bahut acchi di, look kaafi fresh aur modern lag raha tha.",
+"Bridal makeover ke liye best salon hai Patna me, detailing aur finishing dono hi perfect thi.",
+"Salon ka ambience calm aur relaxing hai, service lete time bilkul stress feel nahi hua.",
+"Hair smoothening treatment ka result kaafi natural aur long lasting raha, value for money service.",
+"Makeup artist ne meri requirement samajh ke makeup kiya, look kaafi elegant aur classy tha.",
+"Salon staff ne proper consultation di jo kaafi helpful rahi, overall experience kaafi positive tha.",
+"Beauty parlour services yahan kaafi advanced aur professional level ki hain, highly satisfied.",
+"Glam Fusion Salon by Global Skin Wellness ek complete beauty destination hai, har service ekdum perfect." , "Glam Fusion Salon by Global Skin Wellness offers a premium salon experience in Patna with expert haircuts, styling, and very professional staff.",
+"I visited Glam Fusion Salon in Patliputra for hair styling and the results were amazing, the ambience was clean and relaxing.",
+"One of the best unisex salons in Patna, the hair spa and styling services were extremely satisfying and well executed.",
+"Bridal makeup done at Glam Fusion Salon was flawless and long lasting, highly recommended makeup studio in Patna.",
+"The staff is very polite and professional, they understood my requirements perfectly and delivered excellent results.",
+"Hair coloring service was done very professionally and the shade looked natural with no damage at all.",
+"The salon environment is clean, hygienic, and very calming, which makes the experience even better.",
+"Party makeup from Glam Fusion Salon was stunning and received a lot of compliments, great work by the team.",
+"Facial and skincare services were relaxing and effective, my skin felt fresh and glowing after the treatment.",
+"Hair spa treatment was very relaxing and made my hair smooth and shiny, great service overall.",
+"Glam Fusion Salon is a perfect place for anyone looking for premium grooming and beauty services in Patna.",
+"The makeup artists are highly skilled and pay attention to every detail, the final look was elegant and classy.",
+"Haircut and styling were done exactly as I wanted, very happy with the overall salon experience.",
+"The salon offers excellent beauty parlour services with modern techniques and a professional approach.",
+"Unisex salon with great facilities, suitable for both men and women looking for quality grooming services.",
+"The staff provided proper consultation before starting the service, which was very helpful and reassuring.",
+"Waxing service was hygienic and quick, the staff ensured complete comfort during the process.",
+"Bridal makeover services are top notch, Glam Fusion Salon truly stands out in Patna.",
+"The ambience of the salon is luxurious and relaxing, making it a great place to unwind.",
+"Overall a wonderful experience at Glam Fusion Salon by Global Skin Wellness, highly recommended." ,  
+];
+
+/* ENVIRONMENT */
+const environmentComments = [
+  "Salon was clean and hygienic.",
+  "Staff was polite and friendly.",
+  "Nice ambience and relaxing environment.",
+  "Very professional service.",
+  "Overall a premium salon experience."
+];
+
+/* HAIR SERVICES */
+const hairServices = [
+  "Haircut was perfect.",
+  "Hair styling was done beautifully.",
+  "Hair spa was very relaxing.",
+  "Hair looks smooth and shiny now.",
+  "Styling lasted the whole day."
+];
+
+/* COLOR SERVICES */
+const colorServices = [
+  "Hair color looks natural.",
+  "Coloring was done professionally.",
+  "Loved the hair color shade.",
+  "No damage after coloring."
+];
+
+/* MAKEUP SERVICES */
+const makeupServices = [
+  "Bridal makeup was flawless.",
+  "Party makeup looked stunning.",
+  "Makeover was done perfectly.",
+  "Makeup artist understood my requirements well."
+];
+
+/* BEAUTY SERVICES */
+const beautyServices = [
+  "Facial was very relaxing.",
+  "Skin felt fresh and glowing.",
+  "Waxing service was hygienic.",
+  "Skincare treatment gave visible results."
+];
+
+/* HINGLISH */
+const hinglishEnvironment = [
+  "Staff ka behavior kaafi accha tha.",
+  "Salon bilkul clean tha.",
+  "Overall experience mast raha."
+];
+
+const hinglishHair = [
+  "Haircut bilkul perfect tha.",
+  "Hair spa ke baad baal soft ho gaye."
+];
+
+const hinglishColor = [
+  "Hair color bahut natural laga.",
+  "Coloring ka result amazing tha."
+];
+
+const hinglishMakeup = [
+  "Bridal makeup bahut hi perfect tha.",
+  "Party makeup ka look amazing tha."
+];
+
+const hinglishBeauty = [
+  "Facial ke baad skin glowing lag rahi thi.",
+  "Beauty services kaafi professional thi."
+];
+
+/* MAIN FUNCTION */
+function generateReview() {
+
+  const useCustom = Math.random() < 0.5;
+
+  if (useCustom) {
+    const randomCustom = myCustomReviews[Math.floor(Math.random() * myCustomReviews.length)];
+    document.getElementById("reviewText").innerText = randomCustom;
+  } else {
+
+    const numSentences = Math.floor(Math.random() * 4) + 2;
+    const reviewType = Math.random();
+    const serviceType = Math.random();
+
+    let serviceEng = [];
+    let serviceHin = [];
+
+    if (serviceType < 0.25) {
+      serviceEng = hairServices;
+      serviceHin = hinglishHair;
+    } else if (serviceType < 0.5) {
+      serviceEng = colorServices;
+      serviceHin = hinglishColor;
+    } else if (serviceType < 0.75) {
+      serviceEng = makeupServices;
+      serviceHin = hinglishMakeup;
+    } else {
+      serviceEng = beautyServices;
+      serviceHin = hinglishBeauty;
+    }
+
+    let pool = [];
+
+    if (reviewType < 0.4) {
+      pool = [...environmentComments, ...serviceEng];
+    } else if (reviewType < 0.8) {
+      pool = [...hinglishEnvironment, ...serviceHin];
+    } else {
+      pool = [...environmentComments, ...serviceEng, ...hinglishEnvironment, ...serviceHin];
+    }
+
+    let selected = [];
+    for (let i = 0; i < numSentences && pool.length; i++) {
+      const idx = Math.floor(Math.random() * pool.length);
+      selected.push(pool.splice(idx, 1)[0]);
+    }
+
+    document.getElementById("reviewText").innerText = selected.join(" ");
+  }
+
+  document.getElementById("output").classList.remove("hidden");
+  document.getElementById("placeholder").classList.add("hidden");
+  document.getElementById("copyBtnText").innerText = "Copy Review";
+}
+
+function copyReview() {
+  navigator.clipboard.writeText(document.getElementById("reviewText").innerText);
+  document.getElementById("copyBtnText").innerText = "Copied!";
+  setTimeout(() => {
+    document.getElementById("copyBtnText").innerText = "Copy Review";
+  }, 2000);
+}
+</script>
+
+</body>
+  </html>
